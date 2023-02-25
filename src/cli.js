@@ -16,7 +16,8 @@ const printUsage = function(showIntro) {
                 '\n' +
                 ' Options:\n' + 
                 '   --rotate=<rotate>  Rotate the Sierpinski Arrowhead: [left|right|standard]\n' +
-                '   --line=<line>      Draw using a specific line type: [bold|double|standard]\n');
+                '   --line=<line>      Draw using a specific line type: [bold|standard]\n' +
+                '   --slash, -s        Draw using standard slash characters\n');
 }
 
 const getFlags = function(params) {
@@ -79,6 +80,15 @@ const getLine = function(flags) {
     return undefined;
 }
 
+const drawSlash = function(flags) {
+    for (let i = 0; i < flags.length; i++) {
+        if (flags[i] && (flags[i].toLowerCase() === '-s' || flags[i].toLowerCase() === '--slash')) {
+            return true;
+        }
+    }
+    return false;
+}
+
 if (process.argv.length > 2) {
     const params = process.argv.slice(2);
     const values = getValues(params);
@@ -98,7 +108,7 @@ if (process.argv.length > 2) {
         }
 
         if (n !== undefined && s !== undefined) {
-            console.log(sierpinski.create(n, { size: s, rotate: getRotation(flags), line: getLine(flags) }));
+            console.log(sierpinski.create(n, { size: s, rotate: getRotation(flags), line: getLine(flags), slash: drawSlash(flags) }));
         }
     } else {
         console.log('\n <n> should be a number greater than or equal to 0');
